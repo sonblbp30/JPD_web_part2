@@ -298,10 +298,10 @@
                     <div id="number-hint" class="text-xs text-slate-400">Gợi ý: 3,500 Yên</div>
                 </div>
                 <div class="space-y-3">
-                    <input type="text" id="number-input" placeholder="Gõ Hiragana hoặc Romaji..." class="w-full px-4 py-3 rounded-2xl border text-center font-jp">
+                    <input type="text" id="number-input" placeholder="Nhập phiên âm Romaji..." autocomplete="off" class="w-full px-4 py-3 rounded-2xl border text-center">
                     <button onclick="checkNumberAnswer()" class="w-full py-3.5 rounded-2xl bg-sakura-500 text-white font-bold text-sm">Kiểm Tra</button>
                 </div>
-                <div id="number-feedback" class="hidden p-4 rounded-2xl text-center text-xs font-bold"></div>
+                <div id="number-feedback" class="hidden p-4 rounded-2xl text-center text-xs font-bold" aria-live="polite"></div>
             </div>
         </section>
 
@@ -465,13 +465,13 @@
 
         // NUMBER PRACTICE DATA
         const numberPrompts = [
-            { prompt: "¥ 3,500", hint: "3,500 Yên", answers: ["さんぜんごひゃくえん", "sanzengohyakuen"] },
-            { prompt: "Tầng 3", hint: "Tầng 3 (Biến âm)", answers: ["さんがい", "sangai"] },
-            { prompt: "Tầng 1", hint: "Tầng 1 (Biến âm)", answers: ["いっかい", "ikkai"] },
-            { prompt: "¥ 600", hint: "600 Yên (Biến âm)", answers: ["ろっぴゃくえん", "roppyakuen"] },
-            { prompt: "3 cái", hint: "3 đồ vật nhỏ", answers: ["みっつ", "mittsu"] },
-            { prompt: "¥ 10,000", hint: "1 Vạn Yên", answers: ["いちまんえん", "ichimanen"] },
-            { prompt: "4 người", hint: "4 người (Kanji 四人)", answers: ["よにん", "yonin"] }
+            { prompt: "¥ 3,500", hint: "3,500 Yên", romaji: "sanzengohyakuen", japanese: "さんぜんごひゃくえん" },
+            { prompt: "Tầng 3", hint: "Tầng 3 (Biến âm)", romaji: "sangai", japanese: "さんがい" },
+            { prompt: "Tầng 1", hint: "Tầng 1 (Biến âm)", romaji: "ikkai", japanese: "いっかい" },
+            { prompt: "¥ 600", hint: "600 Yên (Biến âm)", romaji: "roppyakuen", japanese: "ろっぴゃくえん" },
+            { prompt: "3 cái", hint: "3 đồ vật nhỏ", romaji: "mittsu", japanese: "みっつ" },
+            { prompt: "¥ 10,000", hint: "1 Vạn Yên", romaji: "ichimanen", japanese: "いちまんえん" },
+            { prompt: "4 người", hint: "4 người (Kanji 四人)", romaji: "yonin", japanese: "よにん" }
         ];
 
         let currentVocabList = [...vocabularies];
@@ -783,13 +783,13 @@
             const feedback = document.getElementById('number-feedback');
             feedback.classList.remove('hidden');
 
-            if(currentPrompt.answers.includes(input)) {
+            if(currentPrompt.romaji === input) {
                 feedback.className = 'p-4 rounded-2xl bg-emerald-100 text-emerald-800 text-xs font-bold text-center';
-                feedback.innerText = '✨ Chính xác!';
+                feedback.innerText = `✨ Chính xác! Tiếng Nhật: ${currentPrompt.japanese}`;
                 setTimeout(nextNumberPrompt, 1200);
             } else {
                 feedback.className = 'p-4 rounded-2xl bg-rose-100 text-rose-800 text-xs font-bold text-center';
-                feedback.innerText = `❌ Đáp án đúng: ${currentPrompt.answers[0]}`;
+                feedback.innerText = `❌ Đáp án đúng: ${currentPrompt.japanese}`;
             }
         }
 
