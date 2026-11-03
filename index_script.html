@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Học Tiếng Nhật Bài 2 - JPD113 Offline App</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        sakura: {
+                            50: '#fff5f7',
+                            100: '#ffe6ed',
+                            200: '#fecddb',
+                            300: '#fda4af',
+                            400: '#fb7185',
+                            500: '#f43f5e',
+                            600: '#e11d48',
+                            700: '#be123c',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        jp: ['"Noto Sans JP"', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: linear-gradient(135deg, #fff5f7 0%, #f0f4f8 100%); min-height: 100vh; }
+        .font-jp { font-family: 'Noto Sans JP', sans-serif; }
+        .perspective-1000 { perspective: 1000px; }
+        .transform-style-3d { transform-style: preserve-3d; transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
+        .backface-hidden { backface-visibility: hidden; }
+        .rotate-y-180 { transform: rotateY(180deg); }
+    </style>
+</head>
+<body class="text-slate-800 pb-12 select-none">
+
+    <!-- Header Navigation -->
+    <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-md shadow-sm border-b border-sakura-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-3 cursor-pointer" onclick="switchTab('grammar')">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-sakura-500 to-sakura-400 text-white flex items-center justify-center font-black text-xl shadow-md shadow-sakura-200">日</div>
+                <div>
+                    <h1 class="font-bold text-lg text-slate-800 leading-tight">Luyện Tập Tiếng Nhật - Bài 2</h1>
+                    <p class="text-xs text-sakura-600 font-semibold">Giáo trình JPD113 / Từ Vựng & Kanji</p>
+                </div>
+            </div>
+
+            <!-- Nav Items -->
+            <nav class="hidden md:flex gap-1 bg-sakura-50 p-1.5 rounded-2xl border border-sakura-100">
+                <button onclick="switchTab('kanji')" id="nav-kanji" class="tab-btn px-3.5 py-2 rounded-xl text-xs font-bold transition-all text-slate-600 hover:text-sakura-600"><i class="fa-solid fa-pen-nib mr-1.5"></i>Kanji Bài 2</button>
+                <button onclick="switchTab('flashcards')" id="nav-flashcards" class="tab-btn px-3.5 py-2 rounded-xl text-xs font-bold transition-all text-slate-600 hover:text-sakura-600"><i class="fa-solid fa-layer-group mr-1.5"></i>Thẻ Từ Vựng</button>
+                <button onclick="switchTab('grammar')" id="nav-grammar" class="tab-btn px-3.5 py-2 rounded-xl text-xs font-bold transition-all text-sakura-600 bg-white shadow-sm"><i class="fa-solid fa-book-open mr-1.5"></i>Ngữ Pháp & Số</button>
+                <button onclick="switchTab('quiz')" id="nav-quiz" class="tab-btn px-3.5 py-2 rounded-xl text-xs font-bold transition-all text-slate-600 hover:text-sakura-600"><i class="fa-solid fa-circle-question mr-1.5"></i>Trắc Nghiệm</button>
+                <button onclick="switchTab('matching')" id="nav-matching" class="tab-btn px-3.5 py-2 rounded-xl text-xs font-bold transition-all text-slate-600 hover:text-sakura-600"><i class="fa-solid fa-puzzle-piece mr-1.5"></i>Ghép Thẻ</button>
+                <button onclick="switchTab('numbers')" id="nav-numbers" class="tab-btn px-3.5 py-2 rounded-xl text-xs font-bold transition-all text-slate-600 hover:text-sakura-600"><i class="fa-solid fa-calculator mr-1.5"></i>Luyện Đếm Số</button>
+            </nav>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6">
+
+        <!-- TAB KANJI -->
+        <section id="tab-kanji" class="tab-content hidden space-y-6">
+            <div class="bg-white rounded-3xl p-6 border border-sakura-100 shadow-sm flex justify-between items-center">
+                <div>
+                    <h2 class="text-2xl font-extrabold text-slate-800">Kanji Bài 2: 一, 二, 三, 四</h2>
+                    <p class="text-xs text-slate-500 mt-1">Học chữ Hán Nhất, Nhi, Tam, Tứ và các biến âm đặc biệt.</p>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="bg-white rounded-3xl p-6 border border-sakura-100 shadow-sm space-y-4">
+                    <div class="flex justify-between items-center border-b pb-3"><span class="text-xs px-3 py-1 rounded-full bg-sakura-100 text-sakura-700 font-bold">1. NHẤT</span><button onclick="speakJP('いち')" class="w-8 h-8 rounded-full bg-sakura-50 text-sakura-600"><i class="fa-solid fa-volume-high text-xs"></i></button></div>
+                    <div class="text-center py-2"><div class="text-6xl font-black font-jp">一</div><p class="text-xs font-bold text-sakura-600 mt-1">NHẤT</p></div>
+                    <div class="space-y-1.5 text-xs">
+                        <div class="p-2 bg-slate-50 rounded-xl flex justify-between"><span>一 (Số 1)</span><b class="font-jp text-sakura-600">いち</b></div>
+                        <div class="p-2 bg-amber-50 rounded-xl flex justify-between"><span>一日 (Ngày 1) *</span><b class="font-jp">ついたち</b></div>
+                        <div class="p-2 bg-amber-50 rounded-xl flex justify-between"><span>一人 (1 người) *</span><b class="font-jp">ひとり</b></div>
+                    </div>
+                </div>
+                <div class="bg-white rounded-3xl p-6 border border-sakura-100 shadow-sm space-y-4">
+                    <div class="flex justify-between items-center border-b pb-3"><span class="text-xs px-3 py-1 rounded-full bg-sakura-100 text-sakura-700 font-bold">2. NHỊ</span><button onclick="speakJP('に')" class="w-8 h-8 rounded-full bg-sakura-50 text-sakura-600"><i class="fa-solid fa-volume-high text-xs"></i></button></div>
+                    <div class="text-center py-2"><div class="text-6xl font-black font-jp">二</div><p class="text-xs font-bold text-sakura-600 mt-1">NHỊ</p></div>
+                    <div class="space-y-1.5 text-xs">
+                        <div class="p-2 bg-slate-50 rounded-xl flex justify-between"><span>二 (Số 2)</span><b class="font-jp text-sakura-600">に</b></div>
+                        <div class="p-2 bg-amber-50 rounded-xl flex justify-between"><span>二日 (Ngày 2) *</span><b class="font-jp">ふつか</b></div>
+                        <div class="p-2 bg-amber-50 rounded-xl flex justify-between"><span>二人 (2 người) *</span><b class="font-jp">ふたり</b></div>
+                    </div>
+                </div>
+                <div class="bg-white rounded-3xl p-6 border border-sakura-100 shadow-sm space-y-4">
+                    <div class="flex justify-between items-center border-b pb-3"><span class="text-xs px-3 py-1 rounded-full bg-sakura-100 text-sakura-700 font-bold">3. TAM</span><button onclick="speakJP('さん')" class="w-8 h-8 rounded-full bg-sakura-50 text-sakura-600"><i class="fa-solid fa-volume-high text-xs"></i></button></div>
+                    <div class="text-center py-2"><div class="text-6xl font-black font-jp">三</div><p class="text-xs font-bold text-sakura-600 mt-1">TAM</p></div>
+                    <div class="space-y-1.5 text-xs">
+                        <div class="p-2 bg-slate-50 rounded-xl flex justify-between"><span>三 (Số 3)</span><b class="font-jp text-sakura-600">さん</b></div>
+                        <div class="p-2 bg-amber-50 rounded-xl flex justify-between"><span>三日 (Ngày 3) *</span><b class="font-jp">みっか</b></div>
+                    </div>
+                </div>
+                <div class="bg-white rounded-3xl p-6 border border-sakura-100 shadow-sm space-y-4">
+                    <div class="flex justify-between items-center border-b pb-3"><span class="text-xs px-3 py-1 rounded-full bg-sakura-100 text-sakura-700 font-bold">4. TỨ</span><button onclick="speakJP('よん')" class="w-8 h-8 rounded-full bg-sakura-50 text-sakura-600"><i class="fa-solid fa-volume-high text-xs"></i></button></div>
+                    <div class="text-center py-2"><div class="text-6xl font-black font-jp">四</div><p class="text-xs font-bold text-sakura-600 mt-1">TỨ</p></div>
+                    <div class="space-y-1.5 text-xs">
+                        <div class="p-2 bg-amber-50 rounded-xl flex justify-between"><span>四月 (Tháng 4) *</span><b class="font-jp">しがつ</b></div>
+                        <div class="p-2 bg-amber-50 rounded-xl flex justify-between"><span>四日 (Ngày 4) *</span><b class="font-jp">よっか</b></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB FLASHCARDS -->
+        <section id="tab-flashcards" class="tab-content hidden space-y-6">
+            <div class="flex justify-between items-center bg-white p-4 rounded-3xl border border-sakura-100 shadow-sm">
+                <div class="flex gap-2 overflow-x-auto">
+                    <button onclick="filterVocab('all')" class="cat-filter-btn px-4 py-2 rounded-xl text-xs font-bold bg-sakura-500 text-white">Tất cả</button>
+                    <button onclick="filterVocab('location')" class="cat-filter-btn px-4 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-600">Vị trí</button>
+                    <button onclick="filterVocab('item')" class="cat-filter-btn px-4 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-600">Vật dụng</button>
+                    <button onclick="filterVocab('food')" class="cat-filter-btn px-4 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-600">Đồ ăn</button>
+                </div>
+                <div class="text-xs font-bold text-slate-500"><span id="card-counter">1 / 86</span></div>
+            </div>
+
+            <div class="max-w-md mx-auto perspective-1000 h-80 cursor-pointer" onclick="flipCurrentCard()">
+                <div id="flashcard-element" class="w-full h-full transform-style-3d relative rounded-3xl shadow-xl bg-white border border-sakura-100">
+                    <div class="absolute inset-0 backface-hidden p-8 flex flex-col justify-between items-center text-center bg-gradient-to-b from-white to-sakura-50/50 rounded-3xl">
+                        <span id="card-cat-label" class="px-3 py-1 rounded-full bg-sakura-100 text-sakura-600 text-xs font-bold">LOẠI</span>
+                        <div>
+                            <div id="card-jp-text" class="text-4xl font-extrabold font-jp text-slate-800 mb-2">ここ</div>
+                            <div id="card-romaji-text" class="text-sm font-semibold text-sakura-600">koko</div>
+                        </div>
+                        <div class="text-xs text-slate-400">Chạm để lật mặt xem nghĩa</div>
+                    </div>
+                    <div class="absolute inset-0 backface-hidden rotate-y-180 p-8 flex flex-col justify-between items-center text-center bg-slate-900 text-white rounded-3xl">
+                        <div class="w-full flex justify-end">
+                            <button onclick="event.stopPropagation(); speakJP(currentVocabList[currentCardIndex].jp)" class="w-9 h-9 rounded-full bg-slate-800 text-sakura-400"><i class="fa-solid fa-volume-high"></i></button>
+                        </div>
+                        <div>
+                            <div id="card-vn-text" class="text-2xl font-bold text-white mb-2">Đây, chỗ này</div>
+                            <div id="card-jp-back" class="text-sm text-slate-400 font-jp">ここ / こちら</div>
+                        </div>
+                        <div class="text-xs text-slate-500">Chạm để xoay lại</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex justify-center items-center gap-4">
+                <button onclick="prevCard()" class="w-12 h-12 rounded-2xl bg-white border text-sakura-600 flex items-center justify-center"><i class="fa-solid fa-chevron-left text-lg"></i></button>
+                <button onclick="speakJP(currentVocabList[currentCardIndex].jp)" class="px-6 py-3 rounded-2xl bg-sakura-500 text-white font-bold text-sm shadow-md flex items-center gap-2"><i class="fa-solid fa-volume-high"></i> Phát âm</button>
+                <button onclick="nextCard()" class="w-12 h-12 rounded-2xl bg-white border text-sakura-600 flex items-center justify-center"><i class="fa-solid fa-chevron-right text-lg"></i></button>
+            </div>
+        </section>
+
+        <!-- GRAMMAR & NUMBER PRACTICE TAB -->
+        <section id="tab-grammar" class="tab-content space-y-6">
+            <div class="bg-white rounded-3xl p-6 border border-sakura-100 shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                <div>
+                    <h2 class="text-2xl font-extrabold text-slate-800">Tổng Hợp Ngữ Pháp & Quy Tắc Đếm Bài 2</h2>
+                    <p class="text-xs text-slate-500 mt-1">Đầy đủ các mẫu câu hỏi vị trí, xuất xứ, sở hữu, giá tiền và gọi món từ vở ghi JPD113.</p>
+                </div>
+                <div class="px-4 py-2 bg-sakura-100 text-sakura-700 rounded-2xl text-xs font-bold border border-sakura-200">
+                    <i class="fa-solid fa-book-open mr-1"></i> 9 Mẫu Cấu Trúc Trọng Tâm
+                </div>
+            </div>
+
+            <!-- 9 GRAMMAR PATTERNS -->
+            <div id="grammar-container" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
+
+            <!-- DETAILED NUMBER-COUNTING RULES -->
+            <div class="mt-8 space-y-6">
+                <h3 class="text-xl font-extrabold text-slate-800 flex items-center gap-2 border-b pb-3">
+                    <i class="fa-solid fa-calculator text-sakura-500"></i> Bảng Quy Tắc Đếm Số & Gọi Món (Chi Tiết Vở Ghi)
+                </h3>
+
+                <!-- Ordering Food -->
+                <div class="bg-white rounded-3xl p-6 border border-sakura-100 shadow-sm space-y-4">
+                    <h4 class="font-bold text-sakura-600 text-sm">🍱 Cấu Trúc Gọi Món & Đếm Đồ Vật (ひとつ 〜 とお)</h4>
+                    <div class="p-3 bg-slate-50 rounded-2xl text-xs font-semibold text-slate-700">
+                        (?) ちゅうもん を どうぞ (Xin mời gọi món)<br>
+                        (A) N1 を [Số lượng 1] と N2 を [Số lượng 2] ください。(Hãy lấy/cho tôi...)
+                    </div>
+                    <div class="grid grid-cols-2 sm:grid-cols-5 gap-3 text-xs font-jp">
+                        <div class="p-2.5 bg-sakura-50 rounded-xl text-center"><b>1 cái:</b> <span class="text-sakura-600 font-bold">ひとつ</span></div>
+                        <div class="p-2.5 bg-sakura-50 rounded-xl text-center"><b>2 cái:</b> <span class="text-sakura-600 font-bold">ふたつ</span></div>
+                        <div class="p-2.5 bg-sakura-50 rounded-xl text-center"><b>3 cái:</b> <span class="text-sakura-600 font-bold">みっつ</span></div>
+                        <div class="p-2.5 bg-sakura-50 rounded-xl text-center"><b>4 cái:</b> <span class="text-sakura-600 font-bold">よっつ</span></div>
+                        <div class="p-2.5 bg-sakura-50 rounded-xl text-center"><b>5 cái:</b> <span class="text-sakura-600 font-bold">いつつ</span></div>
+                        <div class="p-2.5 bg-sakura-50 rounded-xl text-center"><b>6 cái:</b> <span class="text-sakura-600 font-bold">むっつ</span></div>
+                        <div class="p-2.5 bg-sakura-50 rounded-xl text-center"><b>7 cái:</b> <span class="text-sakura-600 font-bold">ななつ</span></div>
+                        <div class="p-2.5 bg-sakura-50 rounded-xl text-center"><b>8 cái:</b> <span class="text-sakura-600 font-bold">やっつ</span></div>
+                        <div class="p-2.5 bg-sakura-50 rounded-xl text-center"><b>9 cái:</b> <span class="text-sakura-600 font-bold">ここのつ</span></div>
+                        <div class="p-2.5 bg-sakura-50 rounded-xl text-center"><b>10 cái:</b> <span class="text-sakura-600 font-bold">とお</span></div>
+                    </div>
+                </div>
+
+                <!-- Hundreds, Thousands, and Ten-Thousands -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="bg-white p-5 rounded-3xl border border-sakura-100 shadow-sm space-y-3">
+                        <h4 class="font-bold text-sakura-600 text-sm">💯 Hàng Trăm (〜ひゃく)</h4>
+                        <ul class="text-xs space-y-1.5 font-jp text-slate-700">
+                            <li>100: ひゃく</li>
+                            <li>200: にひゃく</li>
+                            <li class="p-1 bg-amber-50 rounded text-amber-900 font-bold">300: さんびゃく (*)</li>
+                            <li>400: よんひゃく</li>
+                            <li>500: ごひゃく</li>
+                            <li class="p-1 bg-amber-50 rounded text-amber-900 font-bold">600: ろっぴゃく (*)</li>
+                            <li>700: ななひゃく</li>
+                            <li class="p-1 bg-amber-50 rounded text-amber-900 font-bold">800: はっぴゃく (*)</li>
+                            <li>900: きゅうひゃく</li>
+                        </ul>
+                    </div>
+                    <div class="bg-white p-5 rounded-3xl border border-sakura-100 shadow-sm space-y-3">
+                        <h4 class="font-bold text-sakura-600 text-sm">🔢 Hàng Ngàn (〜せん)</h4>
+                        <ul class="text-xs space-y-1.5 font-jp text-slate-700">
+                            <li>1,000: せん</li>
+                            <li>2,000: にせん</li>
+                            <li class="p-1 bg-amber-50 rounded text-amber-900 font-bold">3,000: さんぜん (*)</li>
+                            <li>4,000: よんせん</li>
+                            <li>5,000: ごせん</li>
+                            <li>6,000: ろくせん</li>
+                            <li>7,000: ななせん</li>
+                            <li class="p-1 bg-amber-50 rounded text-amber-900 font-bold">8,000: はっせん (*)</li>
+                            <li>9,000: きゅうせん</li>
+                        </ul>
+                    </div>
+                    <div class="bg-white p-5 rounded-3xl border border-sakura-100 shadow-sm space-y-3">
+                        <h4 class="font-bold text-sakura-600 text-sm">💰 Hàng Vạn (〜まん = 10,000)</h4>
+                        <div class="text-xs space-y-2 font-jp">
+                            <p>• 10.000 (1 vạn) = <b>いちまん</b></p>
+                            <p>• 15.000 = <b>いちまん ごせん</b></p>
+                            <p>• 63.700 = <b>ろくまん さんぜん ななひゃく</b></p>
+                            <p>• 100.000 (10 vạn) = <b>じゅうまん</b></p>
+                            <p>• 376.000 (37 vạn 6 ngàn) = <b>さんじゅうななまん ろくせん</b></p>
+                            <p>• 1.000.000 (1 triệu = 100 vạn) = <b>ひゃくまん</b></p>
+                            <p>• 2.750.000 (275 vạn) = <b>にひゃくななじゅうごまん</b></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB QUIZ -->
+        <section id="tab-quiz" class="tab-content hidden space-y-6">
+            <div class="max-w-2xl mx-auto bg-white rounded-3xl p-6 sm:p-8 border border-sakura-100 shadow-sm space-y-6">
+                <div class="flex justify-between items-center border-b pb-4">
+                    <span class="text-xs font-bold text-sakura-600 uppercase">Trắc Nghiệm Kiến Thức</span>
+                    <span id="quiz-progress" class="text-xs font-bold text-slate-400">Câu 1</span>
+                </div>
+                <div id="quiz-question-box" class="space-y-4">
+                    <h3 id="quiz-question" class="text-lg font-bold text-slate-800">Đang tải câu hỏi...</h3>
+                    <div id="quiz-options" class="space-y-3"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB MATCHING GAME -->
+        <section id="tab-matching" class="tab-content hidden space-y-6">
+            <div class="flex justify-between items-center bg-white p-4 rounded-3xl border shadow-sm">
+                <div class="text-xs font-bold text-slate-600"><i class="fa-solid fa-clock text-sakura-500 mr-1"></i> <span id="game-timer">00:00</span></div>
+                <button onclick="initMatchingGame()" class="px-4 py-2 rounded-xl bg-sakura-500 text-white text-xs font-bold">Chơi mới</button>
+            </div>
+            <div id="matching-grid" class="grid grid-cols-2 sm:grid-cols-4 gap-4"></div>
+        </section>
+
+        <!-- TAB NUMBER PRACTICE -->
+        <section id="tab-numbers" class="tab-content hidden space-y-6">
+            <div class="max-w-xl mx-auto bg-white rounded-3xl p-6 border shadow-sm space-y-6">
+                <div class="p-6 bg-sakura-50 rounded-3xl text-center space-y-2">
+                    <div id="number-prompt" class="text-4xl font-extrabold font-jp text-slate-800">¥ 3,500</div>
+                    <div id="number-hint" class="text-xs text-slate-400">Gợi ý: 3,500 Yên</div>
+                </div>
+                <div class="space-y-3">
+                    <input type="text" id="number-input" placeholder="Gõ Hiragana hoặc Romaji..." class="w-full px-4 py-3 rounded-2xl border text-center font-jp">
+                    <button onclick="checkNumberAnswer()" class="w-full py-3.5 rounded-2xl bg-sakura-500 text-white font-bold text-sm">Kiểm Tra</button>
+                </div>
+                <div id="number-feedback" class="hidden p-4 rounded-2xl text-center text-xs font-bold"></div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- MAIN SCRIPT (BUILT-IN OFFLINE DATA) -->
+    <script>
+        // VOCABULARY DATA: 86 WORDS
+        const vocabularies = [
+            { jp: 'ここ / こちら', romaji: 'koko / kochira', vn: 'Đây, chỗ này / Phía này', cat: 'location' },
+            { jp: 'そこ / そちら', romaji: 'soko / sochira', vn: 'Đó, chỗ đó / Phía đó', cat: 'location' },
+            { jp: 'あそこ / あちら', romaji: 'asoko / achira', vn: 'Kia, chỗ kia / Phía kia', cat: 'location' },
+            { jp: 'どこ / どちら', romaji: 'doko / dochira', vn: 'Ở đâu / Phía nào (Kính ngữ)', cat: 'location' },
+            { jp: 'インフォメーション', romaji: 'infome-shon', vn: 'Quầy thông tin / Lễ tân', cat: 'location' },
+            { jp: 'ATM', romaji: 'e-ti-emu', vn: 'Máy rút tiền tự động', cat: 'location' },
+            { jp: 'エスカレーター', romaji: 'esukare-ta-', vn: 'Thang cuốn', cat: 'location' },
+            { jp: 'エレベーター', romaji: 'erebe-ta-', vn: 'Thang máy', cat: 'location' },
+            { jp: 'きつえんしょ', romaji: 'kitsuensho', vn: 'Nơi hút thuốc', cat: 'location' },
+            { jp: 'トイレ', romaji: 'toire', vn: 'Nhà vệ sinh', cat: 'location' },
+            { jp: 'レジ', romaji: 'reji', vn: 'Quầy thu ngân', cat: 'location' },
+            { jp: 'きっさてん', romaji: 'kissaten', vn: 'Quán giải khát / Quán cà phê', cat: 'location' },
+            { jp: 'ひゃくえんショップ', romaji: 'hyakuen shoppu', vn: 'Cửa hàng 100 yên', cat: 'location' },
+            { jp: 'レストラン', romaji: 'resutoran', vn: 'Nhà hàng, quán ăn', cat: 'location' },
+            { jp: 'ちか', romaji: 'chika', vn: 'Tầng hầm, dưới lòng đất', cat: 'location' },
+            { jp: 'カメラ', romaji: 'kamera', vn: 'Máy ảnh', cat: 'item' },
+            { jp: 'けいたいであんわ', romaji: 'keitai denwa', vn: 'Điện thoại di động', cat: 'item' },
+            { jp: 'でんしじしょ', romaji: 'denshijisho', vn: 'Kim từ điển', cat: 'item' },
+            { jp: 'パソコン', romaji: 'pasokon', vn: 'Máy tính cá nhân', cat: 'item' },
+            { jp: 'くつ', romaji: 'kutsu', vn: 'Giày', cat: 'item' },
+            { jp: 'けしゴム', romaji: 'keshigomu', vn: 'Tẩy', cat: 'item' },
+            { jp: 'ペン', romaji: 'pen', vn: 'Bút', cat: 'item' },
+            { jp: 'トイレットペーパー', romaji: 'toirettope-pa-', vn: 'Giấy vệ sinh', cat: 'item' },
+            { jp: '本 (ほん)', romaji: 'hon', vn: 'Sách / Tập', cat: 'item' },
+            { jp: 'あぶら', romaji: 'abura', vn: 'Dầu ăn', cat: 'item' },
+            { jp: 'ケーキ', romaji: 'ke-ki', vn: 'Bánh ngọt', cat: 'food' },
+            { jp: 'こめ', romaji: 'kome', vn: 'Gạo', cat: 'food' },
+            { jp: 'たまご', romaji: 'tamago', vn: 'Trứng', cat: 'food' },
+            { jp: 'パン', romaji: 'pan', vn: 'Bánh mì', cat: 'food' },
+            { jp: 'みず', romaji: 'mizu', vn: 'Nước lọc', cat: 'food' },
+            { jp: 'てんいん', romaji: 'tenin', vn: 'Nhân viên bán hàng', cat: 'other' },
+            { jp: 'いらっしゃいませ', romaji: 'irasshaimase', vn: 'Kính chào quý khách', cat: 'other' },
+            { jp: 'これ', romaji: 'kore', vn: 'Cái này', cat: 'item' },
+            { jp: 'それ', romaji: 'sore', vn: 'Cái đó', cat: 'item' },
+            { jp: 'あれ', romaji: 'are', vn: 'Cái kia', cat: 'item' },
+            { jp: 'どれ', romaji: 'dore', vn: 'Cái nào', cat: 'item' },
+            { jp: 'この', romaji: 'kono', vn: 'Cái ~ này', cat: 'item' },
+            { jp: 'その', romaji: 'sono', vn: 'Cái ~ đó', cat: 'item' },
+            { jp: 'あの', romaji: 'ano', vn: 'Cái ~ kia', cat: 'item' },
+            { jp: 'どの', romaji: 'dono', vn: 'Cái ~ nào', cat: 'item' },
+            { jp: 'かばん', romaji: 'kaban', vn: 'Cặp, túi xách', cat: 'item' },
+            { jp: 'ズボン', romaji: 'zubon', vn: 'Quần dài', cat: 'item' },
+            { jp: 'Tシャツ', romaji: 't-shatsu', vn: 'Áo phông', cat: 'item' },
+            { jp: 'とけい', romaji: 'tokei', vn: 'Đồng hồ', cat: 'item' },
+            { jp: '円 (えん)', romaji: 'en', vn: 'Đơn vị Yên', cat: 'other' },
+            { jp: 'いくら', romaji: 'ikura', vn: 'Bao nhiêu tiền', cat: 'other' },
+            { jp: 'じゃ', romaji: 'ja', vn: 'Thế thì / Thôi thì', cat: 'other' },
+            { jp: 'さかな', romaji: 'sakana', vn: 'Cá', cat: 'food' },
+            { jp: 'にく', romaji: 'niku', vn: 'Thịt', cat: 'food' },
+            { jp: 'ぎゅうにく', romaji: 'gyuuniku', vn: 'Thịt bò', cat: 'food' },
+            { jp: 'ぶたにく', romaji: 'butaniku', vn: 'Thịt lợn', cat: 'food' },
+            { jp: 'とりにく', romaji: 'toriniku', vn: 'Thịt gà', cat: 'food' },
+            { jp: 'やさい', romaji: 'yasai', vn: 'Rau', cat: 'food' },
+            { jp: 'いちご', romaji: 'ichigo', vn: 'Quả dâu', cat: 'food' },
+            { jp: 'りんご', romaji: 'ringo', vn: 'Quả táo', cat: 'food' },
+            { jp: 'りょうり', romaji: 'ryouri', vn: 'Món ăn / Nấu ăn', cat: 'food' },
+            { jp: 'カレー', romaji: 'kare-', vn: 'Món cá-ri', cat: 'food' },
+            { jp: 'スープ', romaji: 'su-pu', vn: 'Canh, súp', cat: 'food' },
+            { jp: 'とんかつ', romaji: 'tonkatsu', vn: 'Thịt lợn chiên xù', cat: 'food' },
+            { jp: 'ハンバーグ', romaji: 'hanba-gu', vn: 'Thịt băm viên', cat: 'food' },
+            { jp: 'ごはん', romaji: 'gohan', vn: 'Cơm', cat: 'food' },
+            { jp: 'ライス', romaji: 'raisu', vn: 'Cơm, gạo (tiếng Anh)', cat: 'food' },
+            { jp: 'ジュース', romaji: 'ju-su', vn: 'Nước ngọt', cat: 'food' },
+            { jp: 'コーヒー', romaji: 'ko-hi-', vn: 'Cà phê', cat: 'food' },
+            { jp: 'こうちゃ', romaji: 'koucha', vn: 'Trà đen', cat: 'food' },
+            { jp: '(お)ちゃ', romaji: '(o)cha', vn: 'Trà xanh', cat: 'food' },
+            { jp: 'ビール', romaji: 'bi-ru', vn: 'Bia', cat: 'food' },
+            { jp: 'ワイン', romaji: 'wain', vn: 'Rượu vang', cat: 'food' },
+            { jp: 'インド', romaji: 'indo', vn: 'Ấn Độ', cat: 'other' },
+            { jp: 'ドイツ', romaji: 'doitsu', vn: 'Đức', cat: 'other' },
+            { jp: 'フランス', romaji: 'furansu', vn: 'Pháp', cat: 'other' },
+            { jp: 'さいふ', romaji: 'saifu', vn: 'Ví tiền', cat: 'item' },
+            { jp: 'えいご', romaji: 'eigo', vn: 'Tiếng Anh', cat: 'other' },
+            { jp: 'だれ', romaji: 'dare', vn: 'Ai', cat: 'other' },
+            { jp: 'どうぞ', romaji: 'douzo', vn: 'Xin mời', cat: 'other' },
+            { jp: 'ひとつ', romaji: 'hitotsu', vn: '1 cái', cat: 'item' },
+            { jp: 'ふたつ', romaji: 'futatsu', vn: '2 cái', cat: 'item' },
+            { jp: 'みっつ', romaji: 'mittsu', vn: '3 cái', cat: 'item' },
+            { jp: 'よっつ', romaji: 'yottsu', vn: '4 cái', cat: 'item' },
+            { jp: 'いつつ', romaji: 'itsutsu', vn: '5 cái', cat: 'item' },
+            { jp: 'むっつ', romaji: 'muttsu', vn: '6 cái', cat: 'item' },
+            { jp: 'ななつ', romaji: 'nanatsu', vn: '7 cái', cat: 'item' },
+            { jp: 'やっつ', romaji: 'yattsu', vn: '8 cái', cat: 'item' },
+            { jp: 'ここのつ', romaji: 'kokonotsu', vn: '9 cái', cat: 'item' },
+            { jp: 'とお', romaji: 'too', vn: '10 cái', cat: 'item' }
+        ];
+
+        // GRAMMAR DATA: 9 KEY SENTENCE PATTERNS
+        const grammarData = [
+            { title: "1. Hỏi & Chỉ Vị Trí của N", q: "(?) N は どこ / どちら ですか。", a: "(A) N は [ ここ / そこ / あそこ ] です。\n    N は [ こちら / そちら / あちら ] です。", note: "• ここ/そこ/あそこ: Bình thường | こちら/そちら/あちら: Kính ngữ" },
+            { title: "2. Hỏi Tầng Lầu (〜かい / 〜がい)", q: "(?) N は なんがい ですか。", a: "(A) N は [Số đếm + かい / がい] です。", note: "• Biến âm: Tầng 1 (いっかい), 3 (さんがい), 6 (ろっかい), 8 (はっかい), 10 (じゅっかい)\n• Tầng hầm: B1 (ちかいっかい), B2 (ちかにかい)" },
+            { title: "3. Xác Định Đồ Vật", q: "(?) これ / それ / あれ は なん ですか。", a: "(A) これ / それ / あれ は [Đồ vật] です。", note: "• これ: Cái này | それ: Cái đó | あれ: Cái kia" },
+            { title: "4. Xác Định Đồ Vật Của Ai (だれの)", q: "(?) これ / それ / あれ は だれの (Đồ vật) ですか。", a: "(A) これ / それ / あれ は [Người] の (Đồ vật) です。", note: "• だれの: Của ai?" },
+            { title: "5. Xác Định Đồ Vật Xuất Xứ Ở Đâu (どこ の)", q: "(?) これ / それ / あれ は どこ の (Đồ vật) ですか。", a: "(A) これ / それ / あれ は [Quốc gia / Công ty] の (Đồ vật) です。", note: "• どこ の: Hỏi xuất xứ sản xuất" },
+            { title: "6. Xác Định Nội Dung / Nguyên Liệu (なん の)", q: "(?) これ / それ / あれ は なん の (Đồ vật) ですか。", a: "(A) これ / それ / あれ は [Nội dung / Nguyên liệu] の (Đồ vật) です。", note: "• なん の: Hỏi nội dung hoặc nguyên liệu" },
+            { title: "7. Nói Đồ Vật Bằng Ngôn Ngữ Gì (〜で)", q: "(?) [Cụm từ / Đồ vật] は [Ngôn ngữ] で なん ですか。", a: "(A) [Tên gọi bằng ngôn ngữ đó] です。", note: "• Ví dụ: 本 は 日本語 で なん ですか。 -> ほん です。" },
+            { title: "8. Hỏi Giá Tiền (いくら)", q: "(?) N は いくら ですか。", a: "(A) N は [Số đếm] えん (円) / ドル ($) / ドン (VNĐ) です。", note: "• いくら: Bao nhiêu tiền?" },
+            { title: "9. Gọi Món Ở Nhà Hàng (Order)", q: "(?) ちゅうもん を どうぞ (Xin mời gọi món)", a: "(A) N1 を [Số lượng 1] と N2 を [Số lượng 2] ください。", note: "• Hãy lấy cho tôi N1 và N2..." }
+        ];
+
+        // QUIZ QUESTION DATA
+        const quizQuestions = [
+            { q: "Kanji '四月' có cách đọc đúng là gì?", options: ["よんがつ", "しがつ", "よっがつ", "よにかつ"], ans: 1 },
+            { q: "Tầng 3 trong tiếng Nhật đọc biến âm là gì?", options: ["さんかい", "さんがい", "さんっかい", "みっかい"], ans: 1 },
+            { q: "Từ nào mang nghĩa 'Quầy thông tin / Lễ tân'?", options: ["インフォメーション", "エレベーター", "エスカレーター", "レジ"], ans: 0 },
+            { q: "Cách đếm '1 người' bằng Kanji (一人) đọc là gì?", options: ["いちにん", "ひとつにん", "ひとり", "ついたち"], ans: 2 },
+            { q: "Mẫu câu hỏi giá tiền của một món đồ là gì?", options: ["N は どこですか", "N は いくらですか", "N は なんがいですか", "N は だれですか"], ans: 1 },
+            { q: "'一日' khi chỉ 'Ngày 1 hàng tháng' đọc là gì?", options: ["いちにち", "ついたち", "ふつか", "みっか"], ans: 1 },
+            { q: "Cách đếm '4 cái' đồ vật nhỏ (よっつ) là từ nào?", options: ["みっつ", "よっつ", "いつつ", "むっつ"], ans: 1 },
+            { q: "Từ nào nghĩa là 'Thịt lợn chiên xù'?", options: ["ハンバーグ", "とんかつ", "カレー", "スープ"], ans: 1 },
+            { q: "Tầng hầm 1 đọc là gì?", options: ["ちかいっかい", "ちかさんかい", "ちかにかい", "ちからかい"], ans: 0 },
+            { q: "Từ chỉ vị trí kính ngữ 'Phía kia (xa người nói & nghe)' là gì?", options: ["こちら", "そちら", "あちら", "どちら"], ans: 2 }
+        ];
+
+        // NUMBER PRACTICE DATA
+        const numberPrompts = [
+            { prompt: "¥ 3,500", hint: "3,500 Yên", answers: ["さんぜんごひゃくえん", "sanzengohyakuen"] },
+            { prompt: "Tầng 3", hint: "Tầng 3 (Biến âm)", answers: ["さんがい", "sangai"] },
+            { prompt: "Tầng 1", hint: "Tầng 1 (Biến âm)", answers: ["いっかい", "ikkai"] },
+            { prompt: "¥ 600", hint: "600 Yên (Biến âm)", answers: ["ろっぴゃくえん", "roppyakuen"] },
+            { prompt: "3 cái", hint: "3 đồ vật nhỏ", answers: ["みっつ", "mittsu"] },
+            { prompt: "¥ 10,000", hint: "1 Vạn Yên", answers: ["いちまんえん", "ichimanen"] },
+            { prompt: "4 người", hint: "4 người (Kanji 四人)", answers: ["よにん", "yonin"] }
+        ];
+
+        let currentVocabList = [...vocabularies];
+        let currentCardIndex = 0;
+        let isCardFlipped = false;
+
+        // Japanese pronunciation
+        function speakJP(text) {
+            if ('speechSynthesis' in window && text) {
+                const cleanText = text.split('/')[0].replace(/\(.*?\)/g, '').trim();
+                const utterance = new SpeechSynthesisUtterance(cleanText);
+                utterance.lang = 'ja-JP';
+                window.speechSynthesis.speak(utterance);
+            }
+        }
+
+        // Render grammar
+        function renderGrammarCards() {
+            const container = document.getElementById('grammar-container');
+            if (!container) return;
+            container.innerHTML = grammarData.map(item => `
+                <div class="bg-white rounded-3xl p-6 border border-sakura-100 shadow-sm space-y-3">
+                    <h3 class="font-bold text-sakura-600 text-base flex items-center gap-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-sakura-500 inline-block"></span>
+                        ${item.title}
+                    </h3>
+                    <div class="p-3 bg-slate-50 rounded-2xl font-jp text-xs space-y-1 font-semibold text-slate-700 border border-slate-100">
+                        <p class="text-sakura-600 whitespace-pre-line">${item.q}</p>
+                        <p class="text-slate-600 whitespace-pre-line font-sans">${item.a}</p>
+                    </div>
+                    <div class="p-3 bg-amber-50/70 rounded-2xl border border-amber-200/60 text-xs text-amber-900 font-jp space-y-1">
+                        <p class="whitespace-pre-line leading-relaxed">${item.note}</p>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Switch Tab Navigation
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('text-sakura-600', 'bg-white', 'shadow-sm');
+                btn.classList.add('text-slate-600');
+            });
+
+            const target = document.getElementById(`tab-${tabId}`);
+            if(target) target.classList.remove('hidden');
+
+            const activeBtn = document.getElementById(`nav-${tabId}`);
+            if(activeBtn) {
+                activeBtn.classList.add('text-sakura-600', 'bg-white', 'shadow-sm');
+                activeBtn.classList.remove('text-slate-600');
+            }
+
+            if(tabId === 'flashcards') updateCardUI();
+            if(tabId === 'quiz') startQuiz();
+            if(tabId === 'matching') initMatchingGame();
+            if(tabId === 'numbers') nextNumberPrompt();
+        }
+
+        // Flashcards Logic
+        function updateCardUI() {
+            if(!currentVocabList.length) return;
+            const item = currentVocabList[currentCardIndex];
+            document.getElementById('card-jp-text').innerText = item.jp;
+            document.getElementById('card-romaji-text').innerText = item.romaji;
+            document.getElementById('card-vn-text').innerText = item.vn;
+            document.getElementById('card-jp-back').innerText = item.jp;
+            document.getElementById('card-cat-label').innerText = item.cat.toUpperCase();
+            document.getElementById('card-counter').innerText = `${currentCardIndex + 1} / ${currentVocabList.length}`;
+            if(isCardFlipped) flipCurrentCard();
+        }
+
+        function flipCurrentCard() {
+            isCardFlipped = !isCardFlipped;
+            document.getElementById('flashcard-element').classList.toggle('rotate-y-180', isCardFlipped);
+        }
+
+        function nextCard() {
+            currentCardIndex = (currentCardIndex + 1) % currentVocabList.length;
+            updateCardUI();
+        }
+
+        function prevCard() {
+            currentCardIndex = (currentCardIndex - 1 + currentVocabList.length) % currentVocabList.length;
+            updateCardUI();
+        }
+
+        function filterVocab(cat) {
+            if(cat === 'all') currentVocabList = [...vocabularies];
+            else currentVocabList = vocabularies.filter(v => v.cat === cat);
+            currentCardIndex = 0;
+            updateCardUI();
+        }
+
+        // Quiz Logic
+        let currentQuizIndex = 0;
+        function startQuiz() {
+            currentQuizIndex = 0;
+            showQuizQuestion();
+        }
+
+        function showQuizQuestion() {
+            if(!quizQuestions.length) return;
+            const q = quizQuestions[currentQuizIndex];
+            document.getElementById('quiz-progress').innerText = `Câu ${currentQuizIndex + 1} / ${quizQuestions.length}`;
+            document.getElementById('quiz-question').innerText = q.q;
+
+            const optsBox = document.getElementById('quiz-options');
+            optsBox.innerHTML = '';
+            q.options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = 'w-full p-4 text-left rounded-2xl border text-xs font-semibold hover:border-sakura-400 hover:bg-sakura-50';
+                btn.innerText = opt;
+                btn.onclick = () => {
+                    currentQuizIndex = (currentQuizIndex + 1) % quizQuestions.length;
+                    showQuizQuestion();
+                };
+                optsBox.appendChild(btn);
+            });
+        }
+
+        // Matching Game Logic
+        function initMatchingGame() {
+            if(!vocabularies.length) return;
+            const shuffled = [...vocabularies].sort(() => 0.5 - Math.random()).slice(0, 4);
+            const cards = [];
+            shuffled.forEach((item, idx) => {
+                cards.push({ id: idx, text: item.jp, type: 'jp' });
+                cards.push({ id: idx, text: item.vn, type: 'vn' });
+            });
+            cards.sort(() => 0.5 - Math.random());
+
+            const grid = document.getElementById('matching-grid');
+            grid.innerHTML = '';
+            cards.forEach(c => {
+                const card = document.createElement('div');
+                card.className = 'h-24 bg-white rounded-2xl border flex items-center justify-center p-3 text-center text-xs font-bold font-jp cursor-pointer hover:border-sakura-400';
+                card.innerText = c.text;
+                grid.appendChild(card);
+            });
+        }
+
+        // Number Practice Logic
+        let currentPrompt = null;
+        function nextNumberPrompt() {
+            if(!numberPrompts.length) return;
+            currentPrompt = numberPrompts[Math.floor(Math.random() * numberPrompts.length)];
+            document.getElementById('number-prompt').innerText = currentPrompt.prompt;
+            document.getElementById('number-hint').innerText = `Gợi ý: ${currentPrompt.hint}`;
+            document.getElementById('number-input').value = '';
+            document.getElementById('number-feedback').classList.add('hidden');
+        }
+
+        function checkNumberAnswer() {
+            const input = document.getElementById('number-input').value.trim().toLowerCase();
+            const feedback = document.getElementById('number-feedback');
+            feedback.classList.remove('hidden');
+
+            if(currentPrompt.answers.includes(input)) {
+                feedback.className = 'p-4 rounded-2xl bg-emerald-100 text-emerald-800 text-xs font-bold text-center';
+                feedback.innerText = '✨ Chính xác!';
+                setTimeout(nextNumberPrompt, 1200);
+            } else {
+                feedback.className = 'p-4 rounded-2xl bg-rose-100 text-rose-800 text-xs font-bold text-center';
+                feedback.innerText = `❌ Đáp án đúng: ${currentPrompt.answers[0]}`;
+            }
+        }
+
+        // Initialize the web page
+        document.addEventListener("DOMContentLoaded", function() {
+            renderGrammarCards();
+            updateCardUI();
+        });
+    </script>
+</body>
+</html>
