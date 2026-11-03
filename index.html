@@ -249,14 +249,33 @@
 
         <!-- TAB QUIZ -->
         <section id="tab-quiz" class="tab-content hidden space-y-6">
-            <div class="max-w-2xl mx-auto bg-white rounded-3xl p-6 sm:p-8 border border-sakura-100 shadow-sm space-y-6">
-                <div class="flex justify-between items-center border-b pb-4">
-                    <span class="text-xs font-bold text-sakura-600 uppercase">Trắc Nghiệm Kiến Thức</span>
-                    <span id="quiz-progress" class="text-xs font-bold text-slate-400">Câu 1</span>
+            <div id="quiz-topic-selection" class="max-w-2xl mx-auto bg-white rounded-3xl p-6 sm:p-8 border border-sakura-100 shadow-sm space-y-6">
+                <div class="space-y-2">
+                    <h2 class="text-xl font-extrabold text-slate-800">Chọn chủ đề trắc nghiệm</h2>
+                    <p class="text-sm text-slate-500">Chọn một chủ đề. Thứ tự câu hỏi sẽ được xáo trộn mỗi lần bắt đầu.</p>
+                </div>
+                <div id="quiz-topic-options" class="grid grid-cols-1 sm:grid-cols-2 gap-3"></div>
+                <button id="quiz-start-button" onclick="beginQuiz()" disabled class="w-full py-3.5 rounded-2xl bg-sakura-500 text-white font-bold text-sm disabled:opacity-50 disabled:cursor-not-allowed">Bắt đầu làm trắc nghiệm</button>
+            </div>
+            <div id="quiz-play-area" class="hidden max-w-2xl mx-auto bg-white rounded-3xl p-6 sm:p-8 border border-sakura-100 shadow-sm space-y-6">
+                <div class="flex justify-between items-center border-b pb-4 gap-4">
+                    <span id="quiz-topic-label" class="text-xs font-bold text-sakura-600 uppercase"></span>
+                    <div class="flex items-center gap-3">
+                        <span id="quiz-progress" class="text-xs font-bold text-slate-400"></span>
+                        <button onclick="showQuizTopicSelection()" class="text-xs font-bold text-slate-500 hover:text-sakura-600">Đổi chủ đề</button>
+                    </div>
                 </div>
                 <div id="quiz-question-box" class="space-y-4">
-                    <h3 id="quiz-question" class="text-lg font-bold text-slate-800">Đang tải câu hỏi...</h3>
+                    <h3 id="quiz-question" class="text-lg font-bold text-slate-800"></h3>
                     <div id="quiz-options" class="space-y-3"></div>
+                </div>
+            </div>
+            <div id="quiz-completion" class="hidden max-w-2xl mx-auto bg-white rounded-3xl p-6 sm:p-8 border border-sakura-100 shadow-sm space-y-5 text-center">
+                <h2 class="text-xl font-extrabold text-emerald-700">Hoàn thành bộ trắc nghiệm!</h2>
+                <p id="quiz-completion-message" class="text-sm text-slate-600"></p>
+                <div class="flex flex-col sm:flex-row gap-3 justify-center">
+                    <button onclick="beginQuiz()" class="px-5 py-3 rounded-2xl bg-sakura-500 text-white font-bold text-sm">Làm lại bộ này</button>
+                    <button onclick="showQuizTopicSelection()" class="px-5 py-3 rounded-2xl bg-slate-100 text-slate-700 font-bold text-sm">Chọn chủ đề khác</button>
                 </div>
             </div>
         </section>
@@ -267,6 +286,7 @@
                 <div class="text-xs font-bold text-slate-600"><i class="fa-solid fa-clock text-sakura-500 mr-1"></i> <span id="game-timer">00:00</span></div>
                 <button onclick="initMatchingGame()" class="px-4 py-2 rounded-xl bg-sakura-500 text-white text-xs font-bold">Chơi mới</button>
             </div>
+            <p id="matching-feedback" class="text-center text-sm font-bold text-slate-600" aria-live="polite">Chọn hai thẻ để ghép cặp.</p>
             <div id="matching-grid" class="grid grid-cols-2 sm:grid-cols-4 gap-4"></div>
         </section>
 
@@ -393,16 +413,54 @@
 
         // QUIZ QUESTION DATA
         const quizQuestions = [
-            { q: "Kanji '四月' có cách đọc đúng là gì?", options: ["よんがつ", "しがつ", "よっがつ", "よにかつ"], ans: 1 },
-            { q: "Tầng 3 trong tiếng Nhật đọc biến âm là gì?", options: ["さんかい", "さんがい", "さんっかい", "みっかい"], ans: 1 },
-            { q: "Từ nào mang nghĩa 'Quầy thông tin / Lễ tân'?", options: ["インフォメーション", "エレベーター", "エスカレーター", "レジ"], ans: 0 },
-            { q: "Cách đếm '1 người' bằng Kanji (一人) đọc là gì?", options: ["いちにん", "ひとつにん", "ひとり", "ついたち"], ans: 2 },
-            { q: "Mẫu câu hỏi giá tiền của một món đồ là gì?", options: ["N は どこですか", "N は いくらですか", "N は なんがいですか", "N は だれですか"], ans: 1 },
-            { q: "'一日' khi chỉ 'Ngày 1 hàng tháng' đọc là gì?", options: ["いちにち", "ついたち", "ふつか", "みっか"], ans: 1 },
-            { q: "Cách đếm '4 cái' đồ vật nhỏ (よっつ) là từ nào?", options: ["みっつ", "よっつ", "いつつ", "むっつ"], ans: 1 },
-            { q: "Từ nào nghĩa là 'Thịt lợn chiên xù'?", options: ["ハンバーグ", "とんかつ", "カレー", "スープ"], ans: 1 },
-            { q: "Tầng hầm 1 đọc là gì?", options: ["ちかいっかい", "ちかさんかい", "ちかにかい", "ちからかい"], ans: 0 },
-            { q: "Từ chỉ vị trí kính ngữ 'Phía kia (xa người nói & nghe)' là gì?", options: ["こちら", "そちら", "あちら", "どちら"], ans: 2 }
+            { topic: 'kanji', q: "Kanji '四月' có cách đọc đúng là gì?", options: ["よんがつ", "しがつ", "よっがつ", "よにかつ"], ans: 1 },
+            { topic: 'numbers', q: "Tầng 3 trong tiếng Nhật đọc biến âm là gì?", options: ["さんかい", "さんがい", "さんっかい", "みっかい"], ans: 1 },
+            { topic: 'vocabulary', q: "Từ nào mang nghĩa 'Quầy thông tin / Lễ tân'?", options: ["インフォメーション", "エレベーター", "エスカレーター", "レジ"], ans: 0 },
+            { topic: 'numbers', q: "Cách đếm '1 người' bằng Kanji (一人) đọc là gì?", options: ["いちにん", "ひとつにん", "ひとり", "ついたち"], ans: 2 },
+            { topic: 'grammar', q: "Mẫu câu hỏi giá tiền của một món đồ là gì?", options: ["N は どこですか", "N は いくらですか", "N は なんがいですか", "N は だれですか"], ans: 1 },
+            { topic: 'kanji', q: "'一日' khi chỉ 'Ngày 1 hàng tháng' đọc là gì?", options: ["いちにち", "ついたち", "ふつか", "みっか"], ans: 1 },
+            { topic: 'numbers', q: "Cách đếm '4 cái' đồ vật nhỏ (よっつ) là từ nào?", options: ["みっつ", "よっつ", "いつつ", "むっつ"], ans: 1 },
+            { topic: 'vocabulary', q: "Từ nào nghĩa là 'Thịt lợn chiên xù'?", options: ["ハンバーグ", "とんかつ", "カレー", "スープ"], ans: 1 },
+            { topic: 'numbers', q: "Tầng hầm 1 đọc là gì?", options: ["ちかいっかい", "ちかさんかい", "ちかにかい", "ちからかい"], ans: 0 },
+            { topic: 'vocabulary', q: "Từ chỉ vị trí kính ngữ 'Phía kia (xa người nói & nghe)' là gì?", options: ["こちら", "そちら", "あちら", "どちら"], ans: 2 },
+            { topic: 'grammar', q: "Câu trả lời phù hợp cho 'N は どこですか' là gì?", options: ["N は ここです", "N は いくらですか", "N を ください", "N は なんさいですか"], ans: 0 },
+            { topic: 'grammar', q: "Muốn gọi món 'Cho tôi N' thì dùng mẫu câu nào?", options: ["N は どこですか", "N は いくらですか", "N を ください", "N は なんですか"], ans: 2 },
+            { topic: 'kanji', q: "Kanji '二月' được đọc như thế nào?", options: ["にがつ", "ふたつき", "にげつ", "にち"], ans: 0 },
+            { topic: 'kanji', q: "Kanji '三月' được đọc như thế nào?", options: ["さんがつ", "みつき", "さんげつ", "みっか"], ans: 0 },
+            { topic: 'kanji', q: "Kanji '四人' chỉ 4 người, đọc là gì?", options: ["よにん", "しにん", "よんにん", "よっつ"], ans: 0 },
+            { topic: 'kanji', q: "Kanji '二日' khi chỉ ngày mùng 2 đọc là gì?", options: ["ににち", "ふつか", "ふたひ", "にち"], ans: 1 },
+            { topic: 'kanji', q: "Kanji '三日' khi chỉ ngày mùng 3 đọc là gì?", options: ["さんにち", "みっか", "みつひ", "みか"], ans: 1 },
+            { topic: 'kanji', q: "Kanji '四日' khi chỉ ngày mùng 4 đọc là gì?", options: ["よんにち", "しにち", "よっか", "よか"], ans: 2 },
+            { topic: 'kanji', q: "Kanji '五日' khi chỉ ngày mùng 5 đọc là gì?", options: ["ごにち", "いつか", "ごっか", "いつひ"], ans: 1 },
+            { topic: 'kanji', q: "Kanji '七日' khi chỉ ngày mùng 7 đọc là gì?", options: ["ななにち", "しちにち", "なのか", "なぬか"], ans: 2 },
+            { topic: 'numbers', q: "Tầng 6 trong tiếng Nhật đọc là gì?", options: ["ろくかい", "ろっかい", "ろくがい", "むっかい"], ans: 1 },
+            { topic: 'numbers', q: "Tầng 8 trong tiếng Nhật đọc là gì?", options: ["はちかい", "はっかい", "はちがい", "やっかい"], ans: 1 },
+            { topic: 'numbers', q: "600 Yên đọc là gì?", options: ["ろくひゃくえん", "ろっぴゃくえん", "ろくびゃくえん", "ろっひゃくえん"], ans: 1 },
+            { topic: 'numbers', q: "Cách đếm '3 người' trong tiếng Nhật là gì?", options: ["さんにん", "みたり", "さんり", "みっにん"], ans: 0 },
+            { topic: 'numbers', q: "Cách đếm '2 người' trong tiếng Nhật là gì?", options: ["ににん", "ふたり", "にたり", "ふたにん"], ans: 1 },
+            { topic: 'numbers', q: "Cách đếm '8 cái' đồ vật nhỏ là gì?", options: ["はちつ", "やっつ", "はっつ", "やつ"], ans: 1 },
+            { topic: 'vocabulary', q: "Từ nào có nghĩa là 'Thang máy'?", options: ["エレベーター", "エスカレーター", "レジ", "トイレ"], ans: 0 },
+            { topic: 'vocabulary', q: "Từ nào có nghĩa là 'Quầy thu ngân'?", options: ["きっさてん", "レジ", "レストラン", "インフォメーション"], ans: 1 },
+            { topic: 'vocabulary', q: "Từ tiếng Nhật nào có nghĩa là 'Thịt bò'?", options: ["ぶたにく", "とりにく", "ぎゅうにく", "さかな"], ans: 2 },
+            { topic: 'vocabulary', q: "Từ nào có nghĩa là 'Nước lọc'?", options: ["あぶら", "みず", "こめ", "たまご"], ans: 1 },
+            { topic: 'vocabulary', q: "Từ tiếng Nhật nào có nghĩa là 'Cặp, túi xách'?", options: ["くつ", "かばん", "ズボン", "とけい"], ans: 1 },
+            { topic: 'vocabulary', q: "Từ nào dùng để hỏi 'Bao nhiêu tiền'?", options: ["どこ", "どれ", "いくら", "だれ"], ans: 2 },
+            { topic: 'vocabulary', q: "Từ 'えん (円)' chỉ đơn vị tiền tệ nào?", options: ["Yên", "Đô la", "Đồng Việt Nam", "Won"], ans: 0 },
+            { topic: 'grammar', q: "Câu 'これはなんですか' có nghĩa là gì?", options: ["Cái này là gì?", "Cái này ở đâu?", "Cái này bao nhiêu tiền?", "Cái này của ai?"], ans: 0 },
+            { topic: 'grammar', q: "Chọn câu đúng để nói 'Quyển sách này':", options: ["これ本", "この本", "ここ本", "どの本は"], ans: 1 },
+            { topic: 'grammar', q: "Từ 'この' cần đứng trước loại từ nào?", options: ["Danh từ", "Động từ", "Tính từ", "Trợ từ"], ans: 0 },
+            { topic: 'grammar', q: "Câu hỏi 'これはだれの本ですか' hỏi điều gì?", options: ["Quyển sách ở đâu?", "Quyển sách giá bao nhiêu?", "Quyển sách này của ai?", "Quyển sách này là gì?"], ans: 2 },
+            { topic: 'grammar', q: "Trong câu '日本語でなんですか', trợ từ 'で' chỉ điều gì?", options: ["Địa điểm", "Ngôn ngữ hoặc phương tiện", "Chủ sở hữu", "Giá tiền"], ans: 1 },
+            { topic: 'grammar', q: "Chọn câu phù hợp để hỏi vị trí của nhà vệ sinh:", options: ["トイレはいくらですか", "トイレはどこですか", "トイレはだれですか", "トイレをください"], ans: 1 },
+            { topic: 'grammar', q: "Chọn câu đúng để nói 'Cái này là sách của tôi':", options: ["これはわたしの本です", "これはわたしを本です", "これわたしは本です", "これのわたし本です"], ans: 0 }
+        ];
+
+        const quizTopics = [
+            { id: 'all', label: 'Tất cả chủ đề' },
+            { id: 'vocabulary', label: 'Từ vựng' },
+            { id: 'kanji', label: 'Kanji' },
+            { id: 'grammar', label: 'Ngữ pháp' },
+            { id: 'numbers', label: 'Số đếm & tầng lầu' }
         ];
 
         // NUMBER PRACTICE DATA
@@ -511,15 +569,81 @@
 
         // Quiz Logic
         let currentQuizIndex = 0;
+        let currentQuizTopic = null;
+        let currentQuizQuestions = [];
+        let quizAdvanceTimeout;
+
         function startQuiz() {
+            showQuizTopicSelection();
+        }
+
+        function showQuizTopicSelection() {
+            clearTimeout(quizAdvanceTimeout);
+            document.getElementById('quiz-topic-selection').classList.remove('hidden');
+            document.getElementById('quiz-play-area').classList.add('hidden');
+            document.getElementById('quiz-completion').classList.add('hidden');
+            renderQuizTopics();
+        }
+
+        function renderQuizTopics() {
+            const topicsBox = document.getElementById('quiz-topic-options');
+            topicsBox.innerHTML = '';
+            quizTopics.forEach(topic => {
+                const count = topic.id === 'all'
+                    ? 20
+                    : quizQuestions.filter(question => question.topic === topic.id).length;
+                const button = document.createElement('button');
+                button.type = 'button';
+                button.dataset.topic = topic.id;
+                button.setAttribute('aria-pressed', String(currentQuizTopic === topic.id));
+                button.className = `p-4 rounded-2xl border text-left transition-all ${currentQuizTopic === topic.id ? 'border-sakura-500 bg-sakura-50 text-sakura-700' : 'border-slate-200 hover:border-sakura-300'}`;
+                const label = document.createElement('span');
+                label.className = 'block text-sm font-bold';
+                label.textContent = topic.label;
+                const questionCount = document.createElement('span');
+                questionCount.className = 'block mt-1 text-xs text-slate-500';
+                questionCount.textContent = `${count} câu hỏi`;
+                button.append(label, questionCount);
+                button.onclick = () => {
+                    currentQuizTopic = topic.id;
+                    document.getElementById('quiz-start-button').disabled = false;
+                    renderQuizTopics();
+                };
+                topicsBox.appendChild(button);
+            });
+        }
+
+        function beginQuiz() {
+            if (!currentQuizTopic) return;
+            const questions = currentQuizTopic === 'all'
+                ? [...quizQuestions]
+                : quizQuestions.filter(question => question.topic === currentQuizTopic);
+            if (!questions.length) return;
+
+            clearTimeout(quizAdvanceTimeout);
+            for (let i = questions.length - 1; i > 0; i--) {
+                const randomIndex = Math.floor(Math.random() * (i + 1));
+                [questions[i], questions[randomIndex]] = [questions[randomIndex], questions[i]];
+            }
+            currentQuizQuestions = currentQuizTopic === 'all' ? questions.slice(0, 20) : questions;
             currentQuizIndex = 0;
+            const selectedTopic = quizTopics.find(topic => topic.id === currentQuizTopic);
+            document.getElementById('quiz-topic-label').innerText = selectedTopic.label;
+            document.getElementById('quiz-topic-selection').classList.add('hidden');
+            document.getElementById('quiz-completion').classList.add('hidden');
+            document.getElementById('quiz-play-area').classList.remove('hidden');
             showQuizQuestion();
         }
 
         function showQuizQuestion() {
-            if(!quizQuestions.length) return;
-            const q = quizQuestions[currentQuizIndex];
-            document.getElementById('quiz-progress').innerText = `Câu ${currentQuizIndex + 1} / ${quizQuestions.length}`;
+            if (currentQuizIndex >= currentQuizQuestions.length) {
+                document.getElementById('quiz-play-area').classList.add('hidden');
+                document.getElementById('quiz-completion-message').innerText = `Bạn đã hoàn thành ${currentQuizQuestions.length} câu hỏi thuộc chủ đề ${document.getElementById('quiz-topic-label').innerText}.`;
+                document.getElementById('quiz-completion').classList.remove('hidden');
+                return;
+            }
+            const q = currentQuizQuestions[currentQuizIndex];
+            document.getElementById('quiz-progress').innerText = `Câu ${currentQuizIndex + 1} / ${currentQuizQuestions.length}`;
             document.getElementById('quiz-question').innerText = q.q;
 
             const optsBox = document.getElementById('quiz-options');
@@ -529,16 +653,43 @@
                 btn.className = 'w-full p-4 text-left rounded-2xl border text-xs font-semibold hover:border-sakura-400 hover:bg-sakura-50';
                 btn.innerText = opt;
                 btn.onclick = () => {
-                    currentQuizIndex = (currentQuizIndex + 1) % quizQuestions.length;
-                    showQuizQuestion();
+                    const optionButtons = optsBox.querySelectorAll('button');
+                    optionButtons.forEach(optionButton => {
+                        optionButton.disabled = true;
+                        optionButton.classList.remove('hover:border-sakura-400', 'hover:bg-sakura-50');
+                    });
+
+                    if (idx === q.ans) {
+                        btn.classList.add('border-emerald-500', 'bg-emerald-100', 'text-emerald-800');
+                    } else {
+                        btn.classList.add('border-rose-500', 'bg-rose-100', 'text-rose-800');
+                        optionButtons[q.ans].classList.add('border-emerald-500', 'bg-emerald-100', 'text-emerald-800');
+                    }
+
+                    quizAdvanceTimeout = setTimeout(() => {
+                        currentQuizIndex++;
+                        showQuizQuestion();
+                    }, 1200);
                 };
                 optsBox.appendChild(btn);
             });
         }
 
         // Matching Game Logic
+        let selectedMatchingCards = [];
+        let matchedPairCount = 0;
+        let isMatchingLocked = false;
+        let matchingTimerInterval;
+        let matchingFeedbackTimeout;
+
         function initMatchingGame() {
             if(!vocabularies.length) return;
+            clearInterval(matchingTimerInterval);
+            clearTimeout(matchingFeedbackTimeout);
+            selectedMatchingCards = [];
+            matchedPairCount = 0;
+            isMatchingLocked = false;
+
             const shuffled = [...vocabularies].sort(() => 0.5 - Math.random()).slice(0, 4);
             const cards = [];
             shuffled.forEach((item, idx) => {
@@ -549,12 +700,71 @@
 
             const grid = document.getElementById('matching-grid');
             grid.innerHTML = '';
+            document.getElementById('matching-feedback').innerText = 'Chọn hai thẻ để ghép cặp.';
+            document.getElementById('game-timer').innerText = '00:00';
             cards.forEach(c => {
-                const card = document.createElement('div');
-                card.className = 'h-24 bg-white rounded-2xl border flex items-center justify-center p-3 text-center text-xs font-bold font-jp cursor-pointer hover:border-sakura-400';
+                const card = document.createElement('button');
+                card.type = 'button';
+                card.className = 'h-24 bg-white rounded-2xl border flex items-center justify-center p-3 text-center text-xs font-bold font-jp cursor-pointer hover:border-sakura-400 transition-colors';
                 card.innerText = c.text;
+                card.dataset.pairId = String(c.id);
+                card.dataset.cardType = c.type;
+                card.addEventListener('click', () => selectMatchingCard(card));
                 grid.appendChild(card);
             });
+
+            let elapsedSeconds = 0;
+            matchingTimerInterval = setInterval(() => {
+                elapsedSeconds++;
+                const minutes = String(Math.floor(elapsedSeconds / 60)).padStart(2, '0');
+                const seconds = String(elapsedSeconds % 60).padStart(2, '0');
+                document.getElementById('game-timer').innerText = `${minutes}:${seconds}`;
+            }, 1000);
+        }
+
+        function selectMatchingCard(card) {
+            if (isMatchingLocked || card.disabled || selectedMatchingCards.includes(card)) return;
+
+            card.classList.add('border-sakura-500', 'bg-sakura-50');
+            selectedMatchingCards.push(card);
+            if (selectedMatchingCards.length < 2) return;
+
+            const [firstCard, secondCard] = selectedMatchingCards;
+            const isMatch = firstCard.dataset.pairId === secondCard.dataset.pairId
+                && firstCard.dataset.cardType !== secondCard.dataset.cardType;
+
+            if (isMatch) {
+                selectedMatchingCards.forEach(selectedCard => {
+                    selectedCard.disabled = true;
+                    selectedCard.classList.remove('border-sakura-500', 'bg-sakura-50');
+                    selectedCard.classList.add('border-emerald-500', 'bg-emerald-100', 'text-emerald-800');
+                });
+                selectedMatchingCards = [];
+                matchedPairCount++;
+
+                if (matchedPairCount === 4) {
+                    clearInterval(matchingTimerInterval);
+                    document.getElementById('matching-feedback').innerText = '🎉 Bạn đã ghép đúng tất cả các cặp!';
+                } else {
+                    document.getElementById('matching-feedback').innerText = 'Chính xác! Hãy tiếp tục ghép cặp.';
+                }
+                return;
+            }
+
+            isMatchingLocked = true;
+            selectedMatchingCards.forEach(selectedCard => {
+                selectedCard.classList.remove('border-sakura-500', 'bg-sakura-50');
+                selectedCard.classList.add('border-rose-500', 'bg-rose-100', 'text-rose-800');
+            });
+            document.getElementById('matching-feedback').innerText = 'Chưa đúng, hãy thử lại.';
+            matchingFeedbackTimeout = setTimeout(() => {
+                selectedMatchingCards.forEach(selectedCard => {
+                    selectedCard.classList.remove('border-rose-500', 'bg-rose-100', 'text-rose-800');
+                });
+                selectedMatchingCards = [];
+                isMatchingLocked = false;
+                document.getElementById('matching-feedback').innerText = 'Chọn hai thẻ để ghép cặp.';
+            }, 700);
         }
 
         // Number Practice Logic
