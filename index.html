@@ -284,9 +284,12 @@
         <section id="tab-matching" class="tab-content hidden space-y-6">
             <div class="flex justify-between items-center bg-white p-4 rounded-3xl border shadow-sm">
                 <div class="text-xs font-bold text-slate-600"><i class="fa-solid fa-clock text-sakura-500 mr-1"></i> <span id="game-timer">00:00</span></div>
-                <button onclick="initMatchingGame()" class="px-4 py-2 rounded-xl bg-sakura-500 text-white text-xs font-bold">Chơi mới</button>
+                <div class="flex gap-2">
+                    <button onclick="initMatchingGame()" class="px-4 py-2 rounded-xl bg-slate-100 text-slate-700 text-xs font-bold">Chơi mới</button>
+                    <button id="matching-ready-button" onclick="startMatchingGame()" class="px-4 py-2 rounded-xl bg-sakura-500 text-white text-xs font-bold">Sẵn sàng</button>
+                </div>
             </div>
-            <p id="matching-feedback" class="text-center text-sm font-bold text-slate-600" aria-live="polite">Chọn hai thẻ để ghép cặp.</p>
+            <p id="matching-feedback" class="text-center text-sm font-bold text-slate-600" aria-live="polite">Bấm “Sẵn sàng” khi bạn đã chuẩn bị.</p>
             <div id="matching-grid" class="grid grid-cols-2 sm:grid-cols-4 gap-4"></div>
         </section>
 
@@ -680,6 +683,7 @@
         let matchedPairCount = 0;
         let isMatchingLocked = false;
         let isMatchingGameActive = false;
+        let isMatchingGameStarted = false;
         let matchingTimeRemaining = 30;
         let matchingTimerInterval;
         let matchingFeedbackTimeout;
@@ -691,7 +695,8 @@
             selectedMatchingCards = [];
             matchedPairCount = 0;
             isMatchingLocked = false;
-            isMatchingGameActive = true;
+            isMatchingGameActive = false;
+            isMatchingGameStarted = false;
             matchingTimeRemaining = 30;
 
             const shuffled = [...vocabularies].sort(() => 0.5 - Math.random()).slice(0, 4);
@@ -704,19 +709,31 @@
 
             const grid = document.getElementById('matching-grid');
             grid.innerHTML = '';
-            document.getElementById('matching-feedback').innerText = 'Chọn hai thẻ để ghép cặp.';
+            document.getElementById('matching-feedback').innerText = 'Bấm “Sẵn sàng” khi bạn đã chuẩn bị.';
             document.getElementById('game-timer').innerText = '00:30';
+            document.getElementById('matching-ready-button').disabled = false;
             cards.forEach(c => {
                 const card = document.createElement('button');
                 card.type = 'button';
                 card.className = 'h-24 bg-white rounded-2xl border flex items-center justify-center p-3 text-center text-xs font-bold font-jp cursor-pointer hover:border-sakura-400 transition-colors';
+                card.disabled = true;
                 card.innerText = c.text;
                 card.dataset.pairId = String(c.id);
                 card.dataset.cardType = c.type;
                 card.addEventListener('click', () => selectMatchingCard(card));
                 grid.appendChild(card);
             });
+        }
 
+        function startMatchingGame() {
+            if (isMatchingGameStarted) return;
+            isMatchingGameStarted = true;
+            isMatchingGameActive = true;
+            document.getElementById('matching-ready-button').disabled = true;
+            document.getElementById('matching-feedback').innerText = 'Chọn hai thẻ để ghép cặp.';
+            document.querySelectorAll('#matching-grid button').forEach(card => {
+                card.disabled = false;
+            });
             matchingTimerInterval = setInterval(() => {
                 matchingTimeRemaining--;
                 const minutes = String(Math.floor(matchingTimeRemaining / 60)).padStart(2, '0');
