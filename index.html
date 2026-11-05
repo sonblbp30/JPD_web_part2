@@ -679,6 +679,8 @@
         let selectedMatchingCards = [];
         let matchedPairCount = 0;
         let isMatchingLocked = false;
+        let isMatchingGameActive = false;
+        let matchingTimeRemaining = 30;
         let matchingTimerInterval;
         let matchingFeedbackTimeout;
 
@@ -689,6 +691,8 @@
             selectedMatchingCards = [];
             matchedPairCount = 0;
             isMatchingLocked = false;
+            isMatchingGameActive = true;
+            matchingTimeRemaining = 30;
 
             const shuffled = [...vocabularies].sort(() => 0.5 - Math.random()).slice(0, 4);
             const cards = [];
@@ -701,7 +705,7 @@
             const grid = document.getElementById('matching-grid');
             grid.innerHTML = '';
             document.getElementById('matching-feedback').innerText = 'Chọn hai thẻ để ghép cặp.';
-            document.getElementById('game-timer').innerText = '00:00';
+            document.getElementById('game-timer').innerText = '00:30';
             cards.forEach(c => {
                 const card = document.createElement('button');
                 card.type = 'button';
@@ -713,17 +717,28 @@
                 grid.appendChild(card);
             });
 
-            let elapsedSeconds = 0;
             matchingTimerInterval = setInterval(() => {
-                elapsedSeconds++;
-                const minutes = String(Math.floor(elapsedSeconds / 60)).padStart(2, '0');
-                const seconds = String(elapsedSeconds % 60).padStart(2, '0');
+                matchingTimeRemaining--;
+                const minutes = String(Math.floor(matchingTimeRemaining / 60)).padStart(2, '0');
+                const seconds = String(matchingTimeRemaining % 60).padStart(2, '0');
                 document.getElementById('game-timer').innerText = `${minutes}:${seconds}`;
+                if (matchingTimeRemaining === 0) {
+                    isMatchingGameActive = false;
+                    isMatchingLocked = true;
+                    clearInterval(matchingTimerInterval);
+                    clearTimeout(matchingFeedbackTimeout);
+                    selectedMatchingCards = [];
+                    grid.querySelectorAll('button:not(:disabled)').forEach(card => {
+                        card.disabled = true;
+                    });
+                    document.getElementById('matching-feedback').innerText =
+                        `Hết giờ! Bạn chưa hoàn thành. Số cặp ghép đúng: ${matchedPairCount} / 4.`;
+                }
             }, 1000);
         }
 
         function selectMatchingCard(card) {
-            if (isMatchingLocked || card.disabled || selectedMatchingCards.includes(card)) return;
+            if (!isMatchingGameActive || isMatchingLocked || card.disabled || selectedMatchingCards.includes(card)) return;
 
             card.classList.add('border-sakura-500', 'bg-sakura-50');
             selectedMatchingCards.push(card);
@@ -743,8 +758,9 @@
                 matchedPairCount++;
 
                 if (matchedPairCount === 4) {
+                    isMatchingGameActive = false;
                     clearInterval(matchingTimerInterval);
-                    document.getElementById('matching-feedback').innerText = '🎉 Bạn đã ghép đúng tất cả các cặp!';
+                    document.getElementById('matching-feedback').innerText = 'せいかいです！ぜんぶ できました！';
                 } else {
                     document.getElementById('matching-feedback').innerText = 'Chính xác! Hãy tiếp tục ghép cặp.';
                 }
