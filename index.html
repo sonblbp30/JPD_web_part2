@@ -121,10 +121,10 @@
         <section id="tab-flashcards" class="tab-content hidden space-y-6">
             <div class="flex justify-between items-center bg-white p-4 rounded-3xl border border-sakura-100 shadow-sm">
                 <div class="flex gap-2 overflow-x-auto">
-                    <button onclick="filterVocab('all')" class="cat-filter-btn px-4 py-2 rounded-xl text-xs font-bold bg-sakura-500 text-white">Tất cả</button>
-                    <button onclick="filterVocab('location')" class="cat-filter-btn px-4 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-600">Vị trí</button>
-                    <button onclick="filterVocab('item')" class="cat-filter-btn px-4 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-600">Vật dụng</button>
-                    <button onclick="filterVocab('food')" class="cat-filter-btn px-4 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-600">Đồ ăn</button>
+                    <button data-cat="all" onclick="filterVocab('all')" class="cat-filter-btn px-4 py-2 rounded-xl text-xs font-bold bg-sakura-500 text-white">Tất cả</button>
+                    <button data-cat="location" onclick="filterVocab('location')" class="cat-filter-btn px-4 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-600">Vị trí</button>
+                    <button data-cat="item" onclick="filterVocab('item')" class="cat-filter-btn px-4 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-600">Vật dụng</button>
+                    <button data-cat="food" onclick="filterVocab('food')" class="cat-filter-btn px-4 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-600">Đồ ăn</button>
                 </div>
                 <div class="text-xs font-bold text-slate-500"><span id="card-counter">1 / 86</span></div>
             </div>
@@ -564,9 +564,18 @@
         }
 
         function filterVocab(cat) {
+            document.querySelectorAll('.cat-filter-btn').forEach(btn => {
+                const isActive = btn.getAttribute('data-cat') === cat;
+                btn.classList.toggle('bg-sakura-500', isActive);
+                btn.classList.toggle('text-white', isActive);
+                btn.classList.toggle('bg-slate-100', !isActive);
+                btn.classList.toggle('text-slate-600', !isActive);
+            });
+
             if(cat === 'all') currentVocabList = [...vocabularies];
             else currentVocabList = vocabularies.filter(v => v.cat === cat);
             currentCardIndex = 0;
+            isCardFlipped = false;
             updateCardUI();
         }
 
